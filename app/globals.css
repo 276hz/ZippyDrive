@@ -1,0 +1,112 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: #0A0B09;
+  background-image:
+    radial-gradient(circle at 20% -8%, rgba(201, 154, 76, 0.09) 0%, transparent 45%),
+    radial-gradient(circle at 100% 100%, rgba(193, 68, 46, 0.05) 0%, transparent 50%),
+    linear-gradient(180deg, #0D0E0B 0%, #0A0B09 55%, #080907 100%);
+  min-height: 100vh;
+  background-attachment: fixed;
+}
+
+/* Vân giấy kraft rất mảnh — gợi cảm giác "bìa hồ sơ", không phải lưới chấm bảng
+   điều khiển kiểu SaaS. Kết hợp 2 lớp chấm lệch nhau tạo texture giấy thô nhẹ. */
+.bg-grid {
+  background-image:
+    radial-gradient(rgba(201, 154, 76, 0.05) 1px, transparent 1px),
+    radial-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 28px 28px, 28px 28px;
+  background-position: 0 0, 14px 14px;
+  mask-image: radial-gradient(ellipse 75% 55% at 50% 0%, black 35%, transparent 100%);
+}
+
+/* ---------- Animations (đã lược bớt — chỉ giữ hiệu ứng có mục đích rõ ràng) ---------- */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(201, 154, 76, 0.4); }
+  70% { box-shadow: 0 0 0 12px rgba(201, 154, 76, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(201, 154, 76, 0); }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes count-glow {
+  0% { text-shadow: 0 0 0 rgba(201, 154, 76, 0); }
+  30% { text-shadow: 0 0 14px rgba(201, 154, 76, 0.4); }
+  100% { text-shadow: 0 0 0 rgba(201, 154, 76, 0); }
+}
+@keyframes border-glow {
+  0%, 100% { border-color: rgba(201, 154, 76, 0.25); }
+  50% { border-color: rgba(110, 155, 107, 0.3); }
+}
+
+/* Khoảnh khắc dấu hiệu (signature moment): con dấu "ĐÃ ĐÓNG GÓI" dập xuống khi
+   zip hoàn tất — nghiêng sẵn -8deg, phóng to từ ngoài rồi giật nhẹ như dấu thật
+   vừa đóng, KHÔNG lặp lại vô hạn (chỉ chạy 1 lần, đúng tinh thần "1 khoảnh khắc
+   được dàn dựng kỹ thay vì nhiều hiệu ứng rời rạc"). */
+@keyframes stamp-down {
+  0% { opacity: 0; transform: scale(2.6) rotate(-8deg); }
+  55% { opacity: 1; transform: scale(0.92) rotate(-8deg); }
+  75% { transform: scale(1.04) rotate(-8deg); }
+  100% { opacity: 1; transform: scale(1) rotate(-8deg); }
+}
+
+.animate-fade-in { animation: fade-in 0.5s ease-out both; }
+.animate-slide-up { animation: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-scale-in { animation: scale-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-pulse-ring { animation: pulse-ring 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+.animate-shimmer {
+  background: linear-gradient(90deg, rgba(255,255,255,0.025) 25%, rgba(255,255,255,0.06) 37%, rgba(255,255,255,0.025) 63%);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+.animate-count-glow { animation: count-glow 0.7s ease-out; }
+.animate-border-glow { animation: border-glow 3.5s ease-in-out infinite; }
+.animate-stamp-down { animation: stamp-down 0.55s cubic-bezier(0.22, 1.4, 0.36, 1) both; }
+
+.stagger-1 { animation-delay: 0.06s; }
+.stagger-2 { animation-delay: 0.13s; }
+.stagger-3 { animation-delay: 0.2s; }
+.stagger-4 { animation-delay: 0.27s; }
+
+/* Tôn trọng cài đặt "giảm chuyển động" của người dùng — tương thích mọi trình duyệt hiện đại */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Scrollbar tối giản, tông kraft nhạt thay vì xám mặc định */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(201, 154, 76, 0.2); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(201, 154, 76, 0.35); }
+* { scrollbar-width: thin; scrollbar-color: rgba(201, 154, 76, 0.2) transparent; }
+
+/* Focus ring bàn phím rõ ràng, tông kraft — giữ chuẩn khả năng tiếp cận */
+:focus-visible {
+  outline: 2px solid rgba(201, 154, 76, 0.6);
+  outline-offset: 2px;
+}
